@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Veeru 💙</title>
+
+<style>
+:root{
+  --big: clamp(2.2rem,6vw,3.5rem);
+  --mid: clamp(1.3rem,4.5vw,2rem);
+  --txt: clamp(1rem,3.8vw,1.25rem);
+}
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Poppins, sans-serif;
+  text-align:center;
+  overflow-x:hidden;
+}
+
+.level{
+  display:none;
+  min-height:100svh;
+  padding:6vw 4vw;
+}
+.active{display:block}
+
+h1{font-size:var(--big)}
+h2{font-size:var(--mid)}
+p{font-size:var(--txt)}
+
+button{
+  padding:14px 30px;
+  border:none;
+  border-radius:30px;
+  background:#4fc3f7;
+  font-size:var(--txt);
+  cursor:pointer;
+  margin-top:18px;
+}
+
+input{
+  padding:14px;
+  width:100%;
+  max-width:320px;
+  border-radius:25px;
+  border:none;
+  text-align:center;
+  font-size:var(--txt);
+}
+
+img{
+  width:100%;
+  max-width:320px;
+  border-radius:18px;
+  margin-top:20px;
+}
+
+/* SHAKE */
+.shake{animation:shake .35s}
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  50%{transform:translateX(6px)}
+  75%{transform:translateX(-6px)}
+  100%{transform:translateX(0)}
+}
+
+/* FRONT */
+.front{
+  background:#c8f2d2;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+/* PUZZLE */
+.puzzle{
+  width:min(90vw,270px);
+  height:min(90vw,270px);
+  margin:30px auto;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:4px;
+}
+
+.tile{
+  background-image:url("puzzle.jpeg");
+  background-size:300% 300%;
+  border-radius:12px;
+}
+.blank{background:none}
+
+/* FULL MESSAGE SCREEN */
+.fullmsg{
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  background:#87ceeb; /* SKY BLUE */
+  text-align:center;
+  padding:40px;
+  z-index:10;
+  overflow:hidden;
+}
+
+.msgbox{
+  background:rgba(255,255,255,0.6);
+  border-radius:30px;
+  padding:40px 30px;
+  max-width:90%;
+  font-size:clamp(1.6rem,5vw,2.4rem);
+  line-height:1.6;
+  color:#0b1d3a;
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
+  animation:pop .4s ease;
+  z-index:2;
+}
+
+@keyframes pop{
+  from{transform:scale(0.8);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+/* BIG TRANSPARENT HEARTS */
+.fullmsg .heart{
+  position:absolute;
+  font-size:80px;          /* BIG */
+  opacity:0.25;            /* TRANSPARENT */
+  animation:fallheart linear infinite;
+}
+
+@keyframes fallheart{
+  from{transform:translateY(-15vh)}
+  to{transform:translateY(120vh)}
+}
+</style>
+</head>
+
+<body>
+
+<!-- FRONT -->
+<div class="level active front" id="l0">
+  <h1>Surprise for Veeru kutty💙</h1>
+  <h2>by Hemu😘😘🫂</h2>
+  <button onclick="go(1)">Open 💌</button>
+</div>
+
+<!-- LEVEL 1 -->
+<div class="level" id="l1" style="background:#0b1d3a;color:white">
+  <h2>Level 1 💙</h2>
+  <p>Namma first meet pannina date ena d?</p>
+  <input id="date" placeholder="DD/MM/YYYY">
+  <button onclick="checkDate()">Enter</button>
+  <p id="dmsg"></p>
+  <button id="dnext" style="display:none" onclick="go(2)">Next ➜</button>
+</div>
+
+<!-- LEVEL 2 -->
+<div class="level" id="l2" style="background:#0b1d3a;color:white">
+  <p>The world is a puzzle,<br>and we're two pieces that fit perfectly together namma life um endha ppuzzle maari dha evlo sanda vandhalum end of the day unaku na dha enaku ne dha seriya thangoo🥹💙🫂</p>
+  <div class="puzzle" id="puzzle"></div>
+  <p id="pmsg"></p>
+  <button id="pnext" style="display:none" onclick="go(3)">Next ➜</button>
+</div>
+
+<!-- LEVEL 3 -->
+<div class="level" id="l3" style="background:#0b1d3a;color:white">
+  <h2>Level 3 🎵</h2>
+  <p>Indha image paathu song kandupidii d</p>
+  <img src="song_clue.jpg">
+  <input id="song" placeholder="Song name">
+  <button onclick="checkSong()">Enter</button>
+  <p id="smsg"></p>
+  <button id="snext" style="display:none" onclick="go(4)">Next ➜</button>
+</div>
+
+<!-- LEVEL 4 -->
+<div class="level" id="l4" style="background:#e6d7ff;color:#2d1457">
+  <h2>Level 4 🎁</h2>
+  <p>Moonu secret messages 💜</p>
+  <div style="font-size:3.5rem">
+    <span onclick="openGift(0)">🎁</span>
+    <span onclick="openGift(1)">🎁</span>
+    <span onclick="openGift(2)">🎁</span>
+  </div>
+  <button onclick="go(5)">Next ➜</button>
+</div>
+
+<!-- FINAL -->
+<div class="level" id="l5" style="background:#6a1b9a;color:white">
+  <h2>Register Marriage 💍</h2>
+  <p>Bride: <b>Hemu</b><br>Groom: <b>Veeru</b></p>
+  <h2>Will you marry me veeruu? 💜</h2>
+
+  <button onclick="yesMarry()" style="background:white;color:#6a1b9a">YES 💍</button>
+  <button onclick="noMarry()" style="background:#9575cd;color:white">NO 🙈</button>
+
+  <div id="finalBox" style="display:none">
+    <h1>I LOVE YOU VEERUU 💙 </h1>
+    <img src="hug.gif">
+    <audio id="bgm" src="song1.mp3" loop></audio>
+  </div>
+</div>
+
+<div class="fullmsg" id="fullmsg"></div>
+
+<script>
+function go(n){
+  document.querySelectorAll('.level').forEach(l=>l.classList.remove('active'));
+  document.getElementById('l'+n).classList.add('active');
+}
+
+/* LEVEL 1 */
+function checkDate(){
+  if(date.value==="07/08/2022"){
+    dmsg.innerHTML="Correct d veeruu maa endha date la ne enaya paathadha mattum niyabugam vachuko d vera ponna nanacha narukiruven🤨💋💙";
+    dnext.style.display="inline-block";
+  }else{
+    dmsg.innerHTML="Wrong d 🐣🤭 try again d 🍑";
+    l1.classList.add("shake");
+    setTimeout(()=>l1.classList.remove("shake"),350);
+  }
+}
+
+/* LEVEL 2 EASY PUZZLE */
+const puzzle=document.getElementById("puzzle");
+const pmsg=document.getElementById("pmsg");
+const pnext=document.getElementById("pnext");
+let tiles=[0,1,2,3,4,5,6,8,7];
+draw();
+
+function draw(){
+  puzzle.innerHTML="";
+  tiles.forEach((n,i)=>{
+    let d=document.createElement("div");
+    d.className="tile";
+    if(n===8){
+      d.classList.add("blank");
+    }else{
+      let x=(n%3)*50;
+      let y=Math.floor(n/3)*50;
+      d.style.backgroundPosition=`${x}% ${y}%`;
+      d.onclick=()=>move(i);
+    }
+    puzzle.appendChild(d);
+  });
+}
+
+function move(i){
+  let b=tiles.indexOf(8);
+  if([b-1,b+1,b-3,b+3].includes(i)){
+    [tiles[i],tiles[b]]=[tiles[b],tiles[i]];
+    draw();
+    checkWin();
+  }
+}
+
+function checkWin(){
+  for(let i=0;i<8;i++) if(tiles[i]!==i) return;
+  pmsg.innerHTML="Super d maa 💙";
+  pnext.style.display="inline-block";
+}
+
+/* LEVEL 3 */
+function checkSong(){
+  if(song.value.toLowerCase().includes("ondra")){
+    smsg.innerHTML="Correcta kandupudichutiyae😉😚 💙";
+    snext.style.display="inline-block";
+  }else{
+    smsg.innerHTML="Try again chloo🤭";
+  }
+}
+
+/* LEVEL 4 SECRET MESSAGES */
+const msgs=[
+ "first time namma pesaila enaku theriyadhu d thangoo ne dha ena evlo sirika vaika porenu enoda lifelong travel panna porenu aana seriousa solren veeru na rmba rmba lucky d ne kadachadhuku 🥹💙🫂💙",
+ "oruthar happya eruka love care protective elam theva adhu elam ore person kita kadacha andha ponnu rmba lucky d andha visiyadhula na rmba lucky maa  😘🫂💚",
+ "Nee dhaan en forever d  maa adichalum pudichalum unaku na dha enaku ne dha veeru maa 🫂💜"
+];
+
+function openGift(i){
+  fullmsg.style.display="flex";
+  fullmsg.innerHTML=`<div class="msgbox">${msgs[i]}<p style="font-size:1rem">(touch to close 🤍)</p></div>`;
+
+  for(let h=0;h<20;h++){
+    let heart=document.createElement("span");
+    heart.className="heart";
+    heart.innerText="🤍";
+    heart.style.left=Math.random()*100+"%";
+    heart.style.animationDuration=6+Math.random()*6+"s";
+    fullmsg.appendChild(heart);
+  }
+
+  fullmsg.onclick=()=>{
+    fullmsg.style.display="none";
+    fullmsg.innerHTML="";
+  }
+}
+
+/* FINAL */
+function yesMarry(){
+  finalBox.style.display="block";
+  bgm.play();
+}
+function noMarry(){
+  alert("Paravala maa 😅 naan wait pannuren 💜");
+}
+</script>
+
+</body>
+</html>
